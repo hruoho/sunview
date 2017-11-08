@@ -9,9 +9,9 @@ class Day extends Component {
   constructor(props) {
     super(props)
     this.sunEvents = ['nadir', 'sunrise', 'solarNoon', 'sunset']
-    this.latitude = 60.10
-    this.longitude = 24.56
-    this.setTimes(props.date)
+    // this.latitude = 60.10
+    // this.longitude = 24.56
+    this.setTimes(props.date, props.coordinates)
     this.state = {
       now: moment()
     }
@@ -25,7 +25,7 @@ class Day extends Component {
   }
 
   componentWillReceiveProps(props) {
-    this.setTimes(props.date)
+    this.setTimes(props.date, props.coordinates)
   }
 
   componentWillUnmount() {
@@ -64,8 +64,8 @@ class Day extends Component {
     return this.getActiveSunEventIndex() === index
   }
 
-  setTimes(date, latitude, longitude) {
-    this.times = SunCalc.getTimes(date, this.latitude, this.longitude)
+  setTimes(date, { latitude, longitude }) {
+    this.times = SunCalc.getTimes(date, latitude, longitude)
   }
 
   tick() {
