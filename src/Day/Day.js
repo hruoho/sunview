@@ -8,10 +8,10 @@ var SunCalc = require('suncalc')
 class Day extends Component {
   constructor(props) {
     super(props)
-    let latitude = 60.10
-    let longitude = 24.56
-    this.times = SunCalc.getTimes(moment(), latitude, longitude)
     this.sunEvents = ['nadir', 'sunrise', 'solarNoon', 'sunset']
+    this.latitude = 60.10
+    this.longitude = 24.56
+    this.setTimes(props.date)
     this.state = {
       now: moment()
     }
@@ -22,6 +22,10 @@ class Day extends Component {
       () => this.tick(),
       1000
     );
+  }
+
+  componentWillReceiveProps(props) {
+    this.setTimes(props.date)
   }
 
   componentWillUnmount() {
@@ -36,7 +40,7 @@ class Day extends Component {
     const time = this.times[type]
     return moment(this.state.now).to(time)
   }
-  
+
   getSunEvents() {
     return (
       this.sunEvents.map((type, index) => {
@@ -60,6 +64,10 @@ class Day extends Component {
     return this.getActiveSunEventIndex() === index
   }
 
+  setTimes(date, latitude, longitude) {
+    this.times = SunCalc.getTimes(date, this.latitude, this.longitude)
+  }
+
   tick() {
     this.setState({
       now: moment()
@@ -69,6 +77,7 @@ class Day extends Component {
   render() {
     return (
       <div className="Day">
+        {this.state.now.format('lll')}
         {this.getSunEvents()}
       </div>
     );

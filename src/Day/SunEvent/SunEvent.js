@@ -13,12 +13,12 @@ class SunEvent extends Component {
 
   render() {
     return (<div className={this.getActiveClass()}>
-      <div className="pure-u-1-3">
+      <div className="pure-u-1-2">
         <div className="eventType">
           <p>{this.props.type}</p>
         </div>
       </div>
-      <div className="pure-u-2-3">
+      <div className="pure-u-1-2">
         <div className="eventMoments">
           <p className="eventMoment">{moment(this.props.time).format('HH:mm:ss')}</p>
           <p className="eventDiff">{this.props.diff}</p>
