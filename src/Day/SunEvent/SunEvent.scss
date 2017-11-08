@@ -1,3 +1,17 @@
-.SunEvent {
-  margin: 1rem 0;
+.sunEvent {
+  // padding: 1rem;
+}
+
+.sunEvent.active {
+  font-size: 150%;
+}
+
+.eventType, .eventMoments {
+  padding: 1rem;
+}
+
+.eventType {
+  height: 100%;
+  border-right: 5px solid red;
+  text-align: right;
 }
