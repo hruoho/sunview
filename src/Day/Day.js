@@ -17,7 +17,7 @@ class Day extends Component {
     return (
       <div className="Day">
       {
-        ['nadir', 'sunrise', 'solarNoon', 'sunset'].map(type => <SunEvent type={type} times={this.times[type]}/>)
+        ['nadir', 'sunrise', 'solarNoon', 'sunset'].map(type => <SunEvent type={type} time={this.times[type]}/>)
       }
       </div>
     );

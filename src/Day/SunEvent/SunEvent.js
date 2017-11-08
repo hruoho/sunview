@@ -6,20 +6,38 @@ class SunEvent extends Component {
 
     constructor(props) {
       super(props)
-      this.time = moment(props.times)
+      this.state = {
+        now: moment()
+      }
+    }
+
+    componentDidMount() {
+      this.timerID = setInterval(
+        () => this.tick(),
+        1000
+      );
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.timerID);
+    }
+
+    tick() {
+      this.setState({
+        now: moment()
+      });
     }
 
     getDiff() {
-      return moment().diff(this.time)
+      return moment(this.state.now).to(this.props.time)
     }
 
     render() {
-
       return (
         <div className="SunEvent">
-          <div>Type: {this.props.type}</div>
-          <div>At: {moment(this.props.times).format('HH:mm:ss')}</div>
-          <div>Diff: {this.getDiff()}</div>
+          <div className="eventType">{this.props.type}</div>
+          <div className="eventMoment">{moment(this.props.time).format('HH:mm:ss')}</div>
+          <div className="eventDiff">{this.getDiff()}</div>
         </div>
       );
     }
