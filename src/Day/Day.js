@@ -28,29 +28,42 @@ class Day extends Component {
     clearInterval(this.timerID);
   }
 
-  tick() {
-    this.setState({
-      now: moment()
-    });
+  getActiveSunEventIndex() {
+    return this.sunEvents.findIndex(event => moment(this.times[event]).isAfter(this.state.now))
   }
 
   getDiff(type) {
     const time = this.times[type]
     return moment(this.state.now).to(time)
   }
-
-  getActiveSunEventIndex() {
-    return this.sunEvents.findIndex(event => moment(this.times[event]).isAfter(this.state.now))
-  }
-
+  
   getSunEvents() {
     return (
       this.sunEvents.map((type, index) => {
         return (
-          <SunEvent key={index} type={type} time={this.times[type]} diff={this.getDiff(type)} isActive={this.getActiveSunEventIndex() === index} />
+          <SunEvent
+            key={index}
+            type={type}
+            time={this.getTimes(type)}
+            diff={this.getDiff(type)}
+            isActive={this.isActive(index)} />
         )
       })
     )
+  }
+
+  getTimes(type) {
+    return this.times[type]
+  }
+
+  isActive(index) {
+    return this.getActiveSunEventIndex() === index
+  }
+
+  tick() {
+    this.setState({
+      now: moment()
+    });
   }
 
   render() {
