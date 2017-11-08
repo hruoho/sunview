@@ -10,6 +10,7 @@ class SunEvent extends Component {
           <div className="eventType">{this.props.type}</div>
           <div className="eventMoment">{moment(this.props.time).format('HH:mm:ss')}</div>
           <div className="eventDiff">{this.props.diff}</div>
+          <p>active: {String(this.props.isActive)}</p>
         </div>
       );
     }

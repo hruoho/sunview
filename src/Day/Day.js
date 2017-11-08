@@ -11,6 +11,7 @@ class Day extends Component {
     let latitude = 60.10
     let longitude = 24.56
     this.times = SunCalc.getTimes(moment(), latitude, longitude)
+    this.sunEvents = ['nadir', 'sunrise', 'solarNoon', 'sunset']
     this.state = {
       now: moment()
     }
@@ -38,12 +39,24 @@ class Day extends Component {
     return moment(this.state.now).to(time)
   }
 
+  getActiveSunEventIndex() {
+    return this.sunEvents.findIndex(event => moment(this.times[event]).isAfter(this.state.now))
+  }
+
+  getSunEvents() {
+    return (
+      this.sunEvents.map((type, index) => {
+        return (
+          <SunEvent key={index} type={type} time={this.times[type]} diff={this.getDiff(type)} isActive={this.getActiveSunEventIndex() === index} />
+        )
+      })
+    )
+  }
+
   render() {
     return (
       <div className="Day">
-      {
-        ['nadir', 'sunrise', 'solarNoon', 'sunset'].map(type => <SunEvent type={type} time={this.times[type]} diff={this.getDiff(type)} />)
-      }
+        {this.getSunEvents()}
       </div>
     );
   }
