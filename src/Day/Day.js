@@ -31,7 +31,10 @@ class Day extends Component {
   }
 
   getActiveSunEventIndex() {
-    return this.sunEvents.findIndex(event => moment(this.times[event]).isAfter(this.state.now))
+    return this.sunEvents.findIndex(event => {
+      event = moment(this.times[event])
+      return event.isSame(this.state.now, 'day') && event.isAfter(this.state.now)
+    } )
   }
 
   getDiff(type) {
