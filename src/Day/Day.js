@@ -79,7 +79,7 @@ class Day extends Component {
   }
 
   isToday(event) {
-    if (typeof event !== 'moment') event = moment(event)
+    if (!moment.isMoment(event)) event = moment(event)
     return event.isSame(this.state.now, 'day')
   }
 
