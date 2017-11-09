@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import './Day.css';
-import SunEvent from './SunEvent/SunEvent';
-import moment from 'moment';
+import React, { Component } from 'react'
+import './Day.css'
+import SunEvent from './SunEvent/SunEvent'
+import moment from 'moment'
 require('moment-duration-format')
 
 var SunCalc = require('suncalc')
 
 class Day extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.sunEvents = ['nadir', 'sunrise', 'solarNoon', 'sunset']
     this.setTimes(props.date, props.coordinates)
@@ -16,34 +16,34 @@ class Day extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.timerID = setInterval(
       () => this.tick(),
       1000
-    );
+    )
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps (props) {
     this.setTimes(props.date, props.coordinates)
   }
 
-  componentWillUnmount() {
+  componentWillUnmount () {
     clearInterval(this.timerID)
   }
 
-  getActiveSunEventIndex() {
+  getActiveSunEventIndex () {
     return this.sunEvents.findIndex(event => {
       event = moment(this.times[event])
       return event.isAfter(this.state.now)
-    } )
+    })
   }
 
-  getDateLength() {
+  getDateLength () {
     return moment.duration(moment(this.getTimes('sunset')).diff(this.getTimes('sunrise'))).format('h [hrs] m [min]')
   }
 
   // TODO move formatting to SunEvent
-  getDiff(type) {
+  getDiff (type) {
     const time = this.times[type]
     const prevTime = moment(this.prevTimes[type]).add(1, 'days')
     let prev = moment.duration(moment(time).diff(prevTime))
@@ -54,7 +54,7 @@ class Day extends Component {
     }
   }
 
-  getSunEvents() {
+  getSunEvents () {
     return (
       this.sunEvents.map((type, index) => {
         return (
@@ -70,39 +70,39 @@ class Day extends Component {
     )
   }
 
-  getTimes(type) {
+  getTimes (type) {
     return this.times[type]
   }
 
-  isActive(index) {
+  isActive (index) {
     return this.getActiveSunEventIndex() === index
   }
 
-  isToday(event) {
+  isToday (event) {
     if (!moment.isMoment(event)) event = moment(event)
     return event.isSame(this.state.now, 'day')
   }
 
-  setTimes(date, { latitude, longitude }) {
+  setTimes (date, { latitude, longitude }) {
     this.times = SunCalc.getTimes(date, latitude, longitude)
     this.prevTimes = SunCalc.getTimes(moment(date).subtract(1, 'days'), latitude, longitude)
   }
 
-  tick() {
+  tick () {
     this.setState({
       now: moment()
-    });
+    })
   }
 
-  render() {
+  render () {
     return (
-      <div className="Day">
-        <h1 className="text-center">{this.props.date.format('ddd MMM DD, YYYY')}</h1>
-        <h3 className="text-center">Day length: {this.getDateLength()}</h3>
+      <div className='Day'>
+        <h1 className='text-center'>{this.props.date.format('ddd MMM DD, YYYY')}</h1>
+        <h3 className='text-center'>Day length: {this.getDateLength()}</h3>
         {this.getSunEvents()}
       </div>
-    );
+    )
   }
 }
 
-export default Day;
+export default Day

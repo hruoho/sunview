@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import './App.css';
-import Day from './Day/Day';
-import moment from 'moment';
-import Swipeable from 'react-swipeable';
+import React, { Component } from 'react'
+import './App.css'
+import Day from './Day/Day'
+import moment from 'moment'
+import Swipeable from 'react-swipeable'
 
 class App extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
     this.state = {
       currentDate: moment(),
@@ -13,16 +13,18 @@ class App extends Component {
     }
   }
 
-  async componentDidMount() {
+  async componentDidMount () {
     // get current coordinates
-    if (process.env.NODE_ENV !== 'production') return this.setState({
-      currentDate: this.state.currentDate,
-      coordinates: {
-        latitude: 60.1697334,
-        longitude: 24.9489475
-      },
-      loading: false
-    })
+    if (process.env.NODE_ENV !== 'production') {
+      return this.setState({
+        currentDate: this.state.currentDate,
+        coordinates: {
+          latitude: 60.1697334,
+          longitude: 24.9489475
+        },
+        loading: false
+      })
+    }
 
     try {
       const coordinates = await this.getCoordinatesAsync()
@@ -41,7 +43,7 @@ class App extends Component {
     }
   }
 
-  getCoordinatesAsync() {
+  getCoordinatesAsync () {
     return new Promise((resolve, reject) => {
       window.navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -54,67 +56,67 @@ class App extends Component {
           maximumAge: 60000,
           timeout: 5000,
           enableHighAccuracy: true
-        });
+        })
     })
   }
 
-  nextDay() {
+  nextDay () {
     this.setState({
       currentDate: this.state.currentDate.add(1, 'days')
     })
-
   }
 
-  prevDay() {
+  prevDay () {
     this.setState({
       currentDate: this.state.currentDate.subtract(1, 'days')
     })
   }
 
-  today() {
-      this.setState({
-        currentDate: moment()
-      })
+  today () {
+    this.setState({
+      currentDate: moment()
+    })
   }
 
-  getContent() {
-    if (this.state.loading || this.state.error) return;
+  getContent () {
+    if (!this.state.loading && !this.state.error) {
+      return (
+        <div>
+          <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
 
-    return (
-      <div>
-        <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
+          <div className='button-area button-area-left' onClick={this.prevDay.bind(this)}>
+            <i className='fa fa-arrow-left' />
+          </div>
+          <div className='button-area button-area-right' onClick={this.nextDay.bind(this)}>
+            <i className='fa fa-arrow-right' />
+          </div>
 
-        <div className="button-area button-area-left" onClick={this.prevDay.bind(this)}>
-          <i className="fa fa-arrow-left"></i>
+          <button className='pure-button pure-button-primary bottom-right rounded-60' onClick={this.today.bind(this)}>
+            <i className='fa fa-calendar-o' />
+          </button>
         </div>
-        <div className="button-area button-area-right" onClick={this.nextDay.bind(this)}>
-          <i className="fa fa-arrow-right"></i>
-        </div>
+      )
+    }
+  }
 
-        <button className="pure-button pure-button-primary bottom-right rounded-60" onClick={this.today.bind(this)}>
-          <i className="fa fa-calendar-o"></i>
-        </button>
-      </div>
+  getLoader () {
+    const loadingClasses = this.state.loading ? 'loading spinner pure-u-1' : 'spinner pure-u-1'
+    return (
+      <div className={loadingClasses} />
     )
   }
 
-  getLoader() {
-    const loadingClasses = this.state.loading ? 'loading spinner pure-u-1' : 'spinner pure-u-1';
-    return (
-      <div className={loadingClasses}></div>
-    )
+  getError () {
+    if (this.state.error) {
+      return (
+        <div className='error'>Error occurred :(</div>
+      )
+    }
   }
 
-  getError() {
-    if (!this.state.error) return;
+  render () {
     return (
-      <div className="error">Error occurred :(</div>
-    )
-  }
-
-  render() {
-    return (
-      <Swipeable onSwipedRight={this.prevDay.bind(this)} onSwipedLeft={this.nextDay.bind(this)} className="App">
+      <Swipeable onSwipedRight={this.prevDay.bind(this)} onSwipedLeft={this.nextDay.bind(this)} className='App'>
         {
           /* loading icon */
           this.getLoader()
@@ -128,8 +130,8 @@ class App extends Component {
           this.getError()
         }
       </Swipeable>
-    );
+    )
   }
 }
 
-export default App;
+export default App
