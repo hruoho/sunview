@@ -1,18 +1,14 @@
 .sunEvent {
-  // padding: 1rem;
   height: calc(25vh - 35px);
-
-  p {
-    margin-top: 0;
-    line-height: 1;
-    vertical-align: top;
-  }
 }
 
 .sunEvent p {
   opacity: 0.5;
   font-size: 1.4rem;
   font-weight: 300;
+  margin-top: 0;
+  line-height: 1;
+  vertical-align: top;
 }
 
 .sunEvent.active p {
