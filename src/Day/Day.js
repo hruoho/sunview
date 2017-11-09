@@ -38,6 +38,10 @@ class Day extends Component {
     } )
   }
 
+  getDateLength() {
+    return moment.duration(moment(this.getTimes('sunset')).diff(this.getTimes('sunrise'))).format('h [hrs] m [min]')
+  }
+
   // TODO move formatting to SunEvent
   getDiff(type) {
     const time = this.times[type]
@@ -93,6 +97,8 @@ class Day extends Component {
   render() {
     return (
       <div className="Day">
+        <h1 className="text-center">{this.props.date.format('ddd MMM DD, YYYY')}</h1>
+        <h3 className="text-center">Day length: {this.getDateLength()}</h3>
         {this.getSunEvents()}
       </div>
     );

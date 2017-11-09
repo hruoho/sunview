@@ -80,7 +80,6 @@ class App extends Component {
     if (this.state.loading || this.state.error) return;
     return (
       <div>
-        <h1 className="text-center">{this.state.currentDate.format('ddd MMM DD, YYYY')}</h1>
         <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
 
         <div className="button-area button-area-left" onClick={this.prevDay.bind(this)}>
