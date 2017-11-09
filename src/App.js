@@ -4,6 +4,11 @@ import Day from './Day/Day'
 import moment from 'moment'
 import Swipeable from 'react-swipeable'
 
+const defaultCoordinates = {
+  latitude: 60.1697334,
+  longitude: 24.9489475
+}
+
 class App extends Component {
   constructor (props) {
     super(props)
@@ -13,15 +18,13 @@ class App extends Component {
     }
   }
 
+
+
   async componentDidMount () {
     // get current coordinates
     if (process.env.NODE_ENV !== 'production') {
       return this.setState({
-        currentDate: this.state.currentDate,
-        coordinates: {
-          latitude: 60.1697334,
-          longitude: 24.9489475
-        },
+        coordinates: defaultCoordinates,
         loading: false
       })
     }

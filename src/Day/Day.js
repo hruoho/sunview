@@ -32,10 +32,7 @@ class Day extends Component {
   }
 
   getActiveSunEventIndex () {
-    return this.sunEvents.findIndex(event => {
-      event = moment(this.times[event])
-      return event.isAfter(this.state.now)
-    })
+    return this.sunEvents.findIndex(event => moment(this.times[event]).isAfter(this.state.now))
   }
 
   getDateLength () {
@@ -45,12 +42,11 @@ class Day extends Component {
   // TODO move formatting to SunEvent
   getDiff (type) {
     const time = this.times[type]
-    const prevTime = moment(this.prevTimes[type]).add(1, 'days')
-    let prev = moment.duration(moment(time).diff(prevTime))
-    let prevFmt = prev.format('mm:ss', {trim: false})
+    const prevTime = moment(this.prevTimes[type])
+    let prev = moment.duration(moment(time).diff(prevTime.add(1, 'days'))) // 24h shift
     return {
       current: moment(this.state.now).to(time),
-      prev: prev >= 0 ? '+' + prevFmt : prevFmt
+      prev: (prev >= 0 ? '+' : '') + prev.format('mm:ss', {trim: false}) // prepend string with + sign if value positive
     }
   }
 
