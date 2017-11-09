@@ -1,11 +1,28 @@
 $loading-width: 150px;
 $loading-height: 150px;
-
 @import '~font-awesome/css/font-awesome.min.css';
 @import url('https://fonts.googleapis.com/css?family=Fira+Sans|Roboto:100,300,400,500');
 
-body, p {
+body,
+p {
   font-family: 'Roboto', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: #4CA1AF;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to top, #C4E0E5, #4CA1AF);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to top, #C4E0E5, #4CA1AF);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+h1,
+h3 {
+  color: #173135;
 }
 
 .buttons {
@@ -35,6 +52,13 @@ button {
   }
 }
 
+.pure-button-primary,
+.pure-button-selected,
+a.pure-button-primary,
+a.pure-button-selected {
+  background: darken( #4CA1AF, 15%);
+}
+
 .button-area {
   position: absolute;
   top: 0;
@@ -56,6 +80,7 @@ button {
   i {
     padding: 1rem;
     font-size: 2rem;
+    color: darken( #4CA1AF, 15%);
   }
 }
 
@@ -76,17 +101,18 @@ button {
     height: $loading-height;
     width: $loading-width;
     opacity: 0;
-    transition: .3s opacity;
+    transition: 0.3s opacity;
     pointer-events: none;
 
     &.loading {
       opacity: 1;
     }
   }
-
   // credits: https://stephanwagner.me/only-css-loading-spinner
   @keyframes spinner {
-    to {transform: rotate(360deg);}
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .spinner:before {
@@ -102,26 +128,26 @@ button {
     border-radius: 50%;
     border: 2px solid #ccc;
     border-top-color: #333;
-    animation: spinner .6s linear infinite;
+    animation: spinner 0.6s linear infinite;
   }
 }
 
 #modal-root {
   & > .overlay {
-      position: fixed;
-      top: 0;
-      bottom: 0;
-      right: 0;
-      left: 0;
-      background-color: rgba(0,0,0,0.7);
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.7);
   }
 
   & > .modal-container {
-      position: fixed;
-      top: 1rem;
-      bottom: 1rem;
-      left: 1rem;
-      right: 1rem;
-      background-color: #FFF;
+    position: fixed;
+    top: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    background-color: #FFF;
   }
 }
