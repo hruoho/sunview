@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Portal } from 'react-portal';
 import './App.css'
 import Day from './Day/Day'
 import moment from 'moment'
@@ -17,8 +18,6 @@ class App extends Component {
       loading: true
     }
   }
-
-
 
   async componentDidMount () {
     // get current coordinates
@@ -75,17 +74,58 @@ class App extends Component {
     })
   }
 
-  today () {
+  toggleLocationScreen() {
     this.setState({
-      currentDate: moment()
+      modal: !this.state.modal
     })
   }
 
-  getContent () {
-    if (!this.state.loading && !this.state.error) {
-      return (
-        <div>
-          <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
+  today() {
+      this.setState({
+        currentDate: moment()
+      })
+  }
+
+  getModalPortal() {
+    if (!this.state.modal) return;
+
+    let long = this.state.coordinates.longitude, lat = this.state.coordinates.latitude;
+    const changeLong = (e) => {
+      long = parseFloat(e.target.value)
+    }
+    const changeLat = (e) => {
+      lat = parseFloat(e.target.value)
+    }
+    const acceptChanges = () => {
+      this.setState({
+        coordinates: {
+          longitude: long,
+          latitude: lat
+        }
+      })
+      this.toggleLocationScreen()
+    }
+
+    return (
+      <Portal>
+        <div id="modal-root">
+          <div className="overlay" />
+          <div className="modal-container pure-g">
+            <h1 className="title pure-u-1">Sijainti</h1>
+            <div className="pure-u-1">Longitude: <input type="text" className="longitude" defaultValue={long} onChange={changeLong} /></div>
+            <div className="pure-u-1">Latitude: <input type="text" className="latitude" defaultValue={lat} onChange={changeLat} /></div>
+            <button className="pure-button pure-button-success" onClick={acceptChanges}>Ok</button>
+          </div>
+        </div>
+      </Portal>
+    )
+  }
+
+  getContent() {
+    if (this.state.loading || this.state.error) return;
+    return (
+      <div>
+        <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
 
           <div className='button-area button-area-left' onClick={this.prevDay.bind(this)}>
             <i className='fa fa-arrow-left' />
@@ -94,12 +134,15 @@ class App extends Component {
             <i className='fa fa-arrow-right' />
           </div>
 
-          <button className='pure-button pure-button-primary bottom-right rounded-60' onClick={this.today.bind(this)}>
-            <i className='fa fa-calendar-o' />
-          </button>
-        </div>
-      )
-    }
+        <button className="pure-button pure-button-secondary bottom-left rounded-60" onClick={this.toggleLocationScreen.bind(this)}>
+          <i className="fa fa-location-arrow" />
+        </button>
+
+        <button className="pure-button pure-button-primary bottom-right rounded-60" onClick={this.today.bind(this)}>
+          <i className="fa fa-calendar-o" />
+        </button>
+      </div>
+    )
   }
 
   getLoader () {
@@ -131,6 +174,10 @@ class App extends Component {
         {
           /* error message */
           this.getError()
+        }
+        {
+          /* location modal */
+          this.getModalPortal()
         }
       </Swipeable>
     )

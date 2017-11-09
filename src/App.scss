@@ -15,16 +15,24 @@ body, p {
   right: 0;
 }
 
-button.bottom-right {
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-}
+button {
+  &.bottom-left {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+  }
 
-button.rounded-60 {
-  border-radius: 40px;
-  width: 60px;
-  height: 60px;
+  &.bottom-right {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+  }
+
+  &.rounded-60 {
+    border-radius: 40px;
+    width: 60px;
+    height: 60px;
+  }
 }
 
 .button-area {
@@ -94,5 +102,25 @@ button.rounded-60 {
     border: 2px solid #ccc;
     border-top-color: #333;
     animation: spinner .6s linear infinite;
+  }
+}
+
+#modal-root {
+  & > .overlay {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      background-color: rgba(0,0,0,0.7);
+  }
+
+  & > .modal-container {
+      position: fixed;
+      top: 1rem;
+      bottom: 1rem;
+      left: 1rem;
+      right: 1rem;
+      background-color: #FFF;
   }
 }
