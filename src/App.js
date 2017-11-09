@@ -90,9 +90,9 @@ class App extends Component {
           <i className="fa fa-arrow-right"></i>
         </div>
 
-        <div className="buttons">
-          <button className="pure-button m-auto" onClick={this.today.bind(this)}>TODAY</button>
-        </div>
+        <button className="pure-button pure-button-primary bottom-right rounded-60" onClick={this.today.bind(this)}>
+          <i className="fa fa-calendar-o"></i>
+        </button>
       </div>
     )
   }
