@@ -69,10 +69,10 @@ class App extends Component {
         <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
 
         <div className='button-area button-area-left' onClick={this.goPrevDay.bind(this)}>
-          <i className='fa fa-arrow-left' />
+          <i className='fa fa-arrow-left animated infinite pulse' />
         </div>
         <div className='button-area button-area-right' onClick={this.goNextDay.bind(this)}>
-          <i className='fa fa-arrow-right' />
+          <i className='fa fa-arrow-right animated infinite pulse' />
         </div>
 
         <button className='pure-button pure-button-primary bottom-left rounded-60' onClick={this.toggleLocationScreen.bind(this)}>
