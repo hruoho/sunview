@@ -12,6 +12,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-scripts": "1.0.17",
+    "react-swipeable": "^4.2.0",
     "suncalc": "^1.8.0"
   },
   "scripts": {

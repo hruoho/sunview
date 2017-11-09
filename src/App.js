@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Day from './Day/Day';
 import moment from 'moment';
+import Swipeable from 'react-swipeable';
 
 class App extends Component {
   constructor(props) {
@@ -78,6 +79,7 @@ class App extends Component {
 
   getContent() {
     if (this.state.loading || this.state.error) return;
+
     return (
       <div>
         <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
@@ -112,7 +114,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
+      <Swipeable onSwipedRight={this.prevDay.bind(this)} onSwipedLeft={this.nextDay.bind(this)} className="App">
         {
           /* loading icon */
           this.getLoader()
@@ -125,7 +127,7 @@ class App extends Component {
           /* error message */
           this.getError()
         }
-      </div>
+      </Swipeable>
     );
   }
 }
