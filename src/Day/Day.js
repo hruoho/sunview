@@ -9,8 +9,6 @@ class Day extends Component {
   constructor(props) {
     super(props)
     this.sunEvents = ['nadir', 'sunrise', 'solarNoon', 'sunset']
-    // this.latitude = 60.10
-    // this.longitude = 24.56
     this.setTimes(props.date, props.coordinates)
     this.state = {
       now: moment()

@@ -12,7 +12,7 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     // get current coordinates
     if (process.env.NODE_ENV !== 'production') return this.setState({
       currentDate: this.state.currentDate,
@@ -23,22 +23,21 @@ class App extends Component {
       loading: false
     })
 
-    this.getCoordinatesAsync()
-      .then((coordinates) => {
-        this.setState({
-          currentDate: this.state.currentDate,
-          coordinates,
-          loading: false
-        })
+    try {
+      const coordinates = await this.getCoordinatesAsync()
+      this.setState({
+        currentDate: this.state.currentDate,
+        coordinates,
+        loading: false
       })
-      .catch((error) => {
-        console.error(error)
-        this.setState({
-          currentDate: this.state.currentDate,
-          loading: false,
-          error: true
-        })
+    } catch (error) {
+      console.error(error)
+      this.setState({
+        currentDate: this.state.currentDate,
+        loading: false,
+        error: true
       })
+    }
   }
 
   getCoordinatesAsync() {
@@ -84,8 +83,12 @@ class App extends Component {
         <h1 className="text-center">{this.state.currentDate.format('ddd MMM DD, YYYY')}</h1>
         <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
 
-        <button className="button-area button-area-left" onClick={this.prevDay.bind(this)}>PREV</button>
-        <button className="button-area button-area-right" onClick={this.nextDay.bind(this)}>NEXT</button>
+        <div className="button-area button-area-left" onClick={this.prevDay.bind(this)}>
+          <i className="fa fa-arrow-left"></i>
+        </div>
+        <div className="button-area button-area-right" onClick={this.nextDay.bind(this)}>
+          <i className="fa fa-arrow-right"></i>
+        </div>
 
         <div className="buttons">
           <button className="pure-button m-auto" onClick={this.today.bind(this)}>TODAY</button>
