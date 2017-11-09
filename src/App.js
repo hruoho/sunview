@@ -134,7 +134,7 @@ class App extends Component {
             <i className='fa fa-arrow-right' />
           </div>
 
-        <button className="pure-button pure-button-secondary bottom-left rounded-60" onClick={this.toggleLocationScreen.bind(this)}>
+        <button className="pure-button pure-button-primary bottom-left rounded-60" onClick={this.toggleLocationScreen.bind(this)}>
           <i className="fa fa-location-arrow" />
         </button>
 
