@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Portal } from 'react-portal';
+import { Portal } from 'react-portal'
 import './App.css'
 import Day from './Day/Day'
 import moment from 'moment'
@@ -62,40 +62,59 @@ class App extends Component {
     })
   }
 
-  nextDay () {
-    this.setState({
-      currentDate: this.state.currentDate.add(1, 'days')
-    })
+  getContent () {
+    if (this.state.loading || this.state.error) return
+    return (
+      <div>
+        <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
+
+        <div className='button-area button-area-left' onClick={this.goPrevDay.bind(this)}>
+          <i className='fa fa-arrow-left' />
+        </div>
+        <div className='button-area button-area-right' onClick={this.goNextDay.bind(this)}>
+          <i className='fa fa-arrow-right' />
+        </div>
+
+        <button className='pure-button pure-button-primary bottom-left rounded-60' onClick={this.toggleLocationScreen.bind(this)}>
+          <i className='fa fa-location-arrow' />
+        </button>
+
+        <button className='pure-button pure-button-primary bottom-right rounded-60' onClick={this.goToday.bind(this)}>
+          <i className='fa fa-calendar-o' />
+        </button>
+      </div>
+    )
   }
 
-  prevDay () {
-    this.setState({
-      currentDate: this.state.currentDate.subtract(1, 'days')
-    })
+  getError () {
+    if (this.state.error) {
+      return (
+        <div className='error'>Error occurred :(</div>
+      )
+    }
   }
 
-  toggleLocationScreen() {
-    this.setState({
-      modal: !this.state.modal
-    })
+  getLoader () {
+    const loadingClasses = this.state.loading ? 'loading spinner pure-u-1' : 'spinner pure-u-1'
+    return (
+      <div className={loadingClasses} />
+    )
   }
 
-  today() {
-      this.setState({
-        currentDate: moment()
-      })
-  }
+  getModalPortal () {
+    if (!this.state.modal) return
 
-  getModalPortal() {
-    if (!this.state.modal) return;
+    let long = this.state.coordinates.longitude
+    let lat = this.state.coordinates.latitude
 
-    let long = this.state.coordinates.longitude, lat = this.state.coordinates.latitude;
     const changeLong = (e) => {
       long = parseFloat(e.target.value)
     }
+
     const changeLat = (e) => {
       lat = parseFloat(e.target.value)
     }
+
     const acceptChanges = () => {
       this.setState({
         coordinates: {
@@ -108,61 +127,46 @@ class App extends Component {
 
     return (
       <Portal>
-        <div id="modal-root">
-          <div className="overlay" />
-          <div className="modal-container pure-g">
-            <h1 className="title pure-u-1">Sijainti</h1>
-            <div className="pure-u-1">Longitude: <input type="text" className="longitude" defaultValue={long} onChange={changeLong} /></div>
-            <div className="pure-u-1">Latitude: <input type="text" className="latitude" defaultValue={lat} onChange={changeLat} /></div>
-            <button className="pure-button pure-button-success" onClick={acceptChanges}>Ok</button>
+        <div id='modal-root'>
+          <div className='overlay' />
+          <div className='modal-container pure-g'>
+            <h1 className='title pure-u-1'>Sijainti</h1>
+            <div className='pure-u-1'>Longitude: <input type='text' className='longitude' defaultValue={long} onChange={changeLong} /></div>
+            <div className='pure-u-1'>Latitude: <input type='text' className='latitude' defaultValue={lat} onChange={changeLat} /></div>
+            <button className='pure-button pure-button-success' onClick={acceptChanges}>Ok</button>
           </div>
         </div>
       </Portal>
     )
   }
 
-  getContent() {
-    if (this.state.loading || this.state.error) return;
-    return (
-      <div>
-        <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
-
-          <div className='button-area button-area-left' onClick={this.prevDay.bind(this)}>
-            <i className='fa fa-arrow-left' />
-          </div>
-          <div className='button-area button-area-right' onClick={this.nextDay.bind(this)}>
-            <i className='fa fa-arrow-right' />
-          </div>
-
-        <button className="pure-button pure-button-primary bottom-left rounded-60" onClick={this.toggleLocationScreen.bind(this)}>
-          <i className="fa fa-location-arrow" />
-        </button>
-
-        <button className="pure-button pure-button-primary bottom-right rounded-60" onClick={this.today.bind(this)}>
-          <i className="fa fa-calendar-o" />
-        </button>
-      </div>
-    )
+  goNextDay () {
+    this.setState({
+      currentDate: this.state.currentDate.add(1, 'days')
+    })
   }
 
-  getLoader () {
-    const loadingClasses = this.state.loading ? 'loading spinner pure-u-1' : 'spinner pure-u-1'
-    return (
-      <div className={loadingClasses} />
-    )
+  goPrevDay () {
+    this.setState({
+      currentDate: this.state.currentDate.subtract(1, 'days')
+    })
   }
 
-  getError () {
-    if (this.state.error) {
-      return (
-        <div className='error'>Error occurred :(</div>
-      )
-    }
+  goToday () {
+    this.setState({
+      currentDate: moment()
+    })
+  }
+
+  toggleLocationScreen () {
+    this.setState({
+      modal: !this.state.modal
+    })
   }
 
   render () {
     return (
-      <Swipeable onSwipedRight={this.prevDay.bind(this)} onSwipedLeft={this.nextDay.bind(this)} className='App'>
+      <Swipeable onSwipedRight={this.goPrevDay.bind(this)} onSwipedLeft={this.goNextDay.bind(this)} className='App'>
         {
           /* loading icon */
           this.getLoader()
