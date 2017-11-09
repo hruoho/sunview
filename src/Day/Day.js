@@ -77,7 +77,6 @@ class Day extends Component {
   render() {
     return (
       <div className="Day">
-        {this.state.now.format('lll')}
         {this.getSunEvents()}
       </div>
     );

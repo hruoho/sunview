@@ -7,10 +7,15 @@
   }
 }
 
-.sunEvent.active {
-  .eventType, .eventMoment {
-    font-size: 150%;
-  }
+.sunEvent p {
+  opacity: 0.5;
+  font-size: 1.4rem;
+  font-weight: 300;
+}
+
+.sunEvent.active p {
+  opacity: 1;
+  font-weight: 500;
 }
 
 .eventMoments,

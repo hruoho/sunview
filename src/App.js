@@ -14,6 +14,15 @@ class App extends Component {
 
   componentDidMount() {
     // get current coordinates
+    if (process.env.NODE_ENV !== 'production') return this.setState({
+      currentDate: this.state.currentDate,
+      coordinates: {
+        latitude: 60.1697334,
+        longitude: 24.9489475
+      },
+      loading: false
+    })
+
     this.getCoordinatesAsync()
       .then((coordinates) => {
         this.setState({
@@ -45,7 +54,7 @@ class App extends Component {
           maximumAge: 60000,
           timeout: 5000,
           enableHighAccuracy: true
-        });    
+        });
     })
   }
 
@@ -68,31 +77,52 @@ class App extends Component {
       })
   }
 
-  render() {
-    const loadingClasses = this.state.loading ? 'loading spinner pure-u-1' : 'spinner pure-u-1';
+  getContent() {
+    if (this.state.loading || this.state.error) return;
+    return (
+      <div>
+        <h1 className="text-center">{this.state.currentDate.format('ddd MMM DD, YYYY')}</h1>
+        <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
 
+        <button className="button-area button-area-left" onClick={this.prevDay.bind(this)}>PREV</button>
+        <button className="button-area button-area-right" onClick={this.nextDay.bind(this)}>NEXT</button>
+
+        <div className="buttons">
+          <button className="pure-button m-auto" onClick={this.today.bind(this)}>TODAY</button>
+        </div>
+      </div>
+    )
+  }
+
+  getLoader() {
+    const loadingClasses = this.state.loading ? 'loading spinner pure-u-1' : 'spinner pure-u-1';
+    return (
+      <div className={loadingClasses}></div>
+    )
+  }
+
+  getError() {
+    if (!this.state.error) return;
+    return (
+      <div className="error">Error occurred :(</div>
+    )
+  }
+
+  render() {
     return (
       <div className="App">
-        {/* loading icon */}
-        <div className={loadingClasses}></div>
-
-        {/* main content */}
-        {(!this.state.loading && !this.state.error) ?
-          <div>
-            <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
-            <div className="buttons">
-              <button onClick={this.prevDay.bind(this)}>PREV</button>
-              <button onClick={this.today.bind(this)}>TODAY</button>
-              <button onClick={this.nextDay.bind(this)}>NEXT</button>
-
-              <span>{this.state.currentDate.format('YYYY-MM-DD')}</span>
-            </div>
-          </div>
-          : undefined
+        {
+          /* loading icon */
+          this.getLoader()
         }
-
-        {/* error message */}
-        {this.state.error ? <div className="error">Error occurred :(</div> : undefined}
+        {
+          /* main content */
+          this.getContent()
+        }
+        {
+          /* error message */
+          this.getError()
+        }
       </div>
     );
   }
