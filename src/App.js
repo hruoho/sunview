@@ -120,20 +120,33 @@ class App extends Component {
         coordinates: {
           longitude: long,
           latitude: lat
-        }
+        },
+        modal: false
       })
-      this.toggleLocationScreen()
     }
 
     return (
       <Portal>
-        <div id='modal-root'>
-          <div className='overlay' />
-          <div className='modal-container pure-g'>
-            <h1 className='title pure-u-1'>Sijainti</h1>
-            <div className='pure-u-1'>Longitude: <input type='text' className='longitude' defaultValue={long} onChange={changeLong} /></div>
-            <div className='pure-u-1'>Latitude: <input type='text' className='latitude' defaultValue={lat} onChange={changeLat} /></div>
-            <button className='pure-button pure-button-success' onClick={acceptChanges}>Ok</button>
+        <div id="modal-root">
+          <div className="overlay" />
+          <div className="modal-container">
+            <form className="pure-form pure-form-aligned">
+              <fieldset>
+                <legend>Sijainti</legend>
+                <div className="pure-control-group">
+                  <label htmlFor="longitude">Longitude</label>
+                  <input id="longitude" type="text" className="longitude" defaultValue={long} onChange={changeLong} />
+                </div>
+                <div className="pure-control-group">
+                  <label htmlFor="latitude">Longitude</label>
+                  <input id="latitude" type="text" className="latitude" defaultValue={lat} onChange={changeLat} />
+                </div>
+                <div className="pure-controls">
+                  <button type="button" className="pure-button pure-button-primary" onClick={acceptChanges}>OK</button>
+                </div>
+              </fieldset>
+            </form>
+            <i className="fa fa-times close button-top-right" onClick={this.toggleLocationScreen.bind(this)} />
           </div>
         </div>
       </Portal>

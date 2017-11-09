@@ -144,10 +144,24 @@ a.pure-button-selected {
 
   & > .modal-container {
     position: fixed;
-    top: 1rem;
-    bottom: 1rem;
+    top: 25%;
     left: 1rem;
     right: 1rem;
     background-color: #FFF;
+    border-radius: 5px;
+    padding: 1rem;
+
+    h1 {
+      margin-top: 0;
+    }
+
+    i.close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 24px;
+      cursor: pointer;
+      margin: 1rem;
+    }
   }
 }
