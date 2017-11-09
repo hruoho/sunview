@@ -10,11 +10,13 @@ p {
 
 body {
   min-height: 100vh;
-  background: #4CA1AF;
+  $green: lighten(#4CA1AF, 35%);
+  $lgreen: lighten(#C4E0E5, 20%);
+  background: $green;
   /* fallback for old browsers */
-  background: -webkit-linear-gradient(to top, #C4E0E5, #4CA1AF);
+  background: -webkit-linear-gradient(to top, $lgreen, $green);
   /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(to top, #C4E0E5, #4CA1AF);
+  background: linear-gradient(to top, $lgreen, $green);
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -79,7 +81,7 @@ a.pure-button-selected {
 
   i {
     padding: 1rem;
-    font-size: 2rem;
+    font-size: 1.5rem;
     color: darken( #4CA1AF, 15%);
   }
 }
