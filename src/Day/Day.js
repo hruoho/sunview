@@ -31,23 +31,25 @@ class Day extends Component {
     clearInterval(this.timerID)
   }
 
-  getActiveSunEventIndex () {
-    return this.sunEvents.findIndex(event => moment(this.times[event]).isAfter(this.state.now))
+  getDayLength () {
+    var sunrise = moment(this.eventTimes['sunrise'])
+    var sunset = moment(this.eventTimes['sunset'])
+    return moment.duration(sunset.diff(sunrise)).format('h [hrs] m [min]')
   }
 
-  getDateLength () {
-    return moment.duration(moment(this.getTimes('sunset')).diff(this.getTimes('sunrise'))).format('h [hrs] m [min]')
-  }
-
-  // TODO move formatting to SunEvent
   getDiff (type) {
-    const time = this.times[type]
-    const prevTime = moment(this.prevTimes[type])
-    let prev = moment.duration(moment(time).diff(prevTime.add(1, 'days'))) // 24h shift
+    const eventTime = moment(this.eventTimes[type])
+    const ydaEventTime = moment(this.ydaEventTimes[type])
     return {
-      current: moment(this.state.now).to(time),
-      prev: (prev >= 0 ? '+' : '') + prev.format('mm:ss', {trim: false}) // prepend string with + sign if value positive
+      current: moment(this.state.now).to(eventTime),
+      prev: moment.duration(eventTime.diff(ydaEventTime.add(1, 'days')))
     }
+  }
+
+  getNextEventIdx () {
+    return this.sunEvents
+      .map(event => moment(this.eventTimes[event]))
+      .findIndex(event => event.isAfter(this.state.now))
   }
 
   getSunEvents () {
@@ -67,11 +69,11 @@ class Day extends Component {
   }
 
   getTimes (type) {
-    return this.times[type]
+    return this.eventTimes[type]
   }
 
   isActive (index) {
-    return this.getActiveSunEventIndex() === index
+    return this.getNextEventIdx() === index
   }
 
   isToday (event) {
@@ -80,8 +82,8 @@ class Day extends Component {
   }
 
   setTimes (date, { latitude, longitude }) {
-    this.times = SunCalc.getTimes(date, latitude, longitude)
-    this.prevTimes = SunCalc.getTimes(moment(date).subtract(1, 'days'), latitude, longitude)
+    this.eventTimes = SunCalc.getTimes(date, latitude, longitude)
+    this.ydaEventTimes = SunCalc.getTimes(moment(date).subtract(1, 'days'), latitude, longitude)
   }
 
   tick () {
@@ -94,7 +96,7 @@ class Day extends Component {
     return (
       <div className='Day'>
         <h1 className='text-center'>{this.props.date.format('ddd MMM DD, YYYY')}</h1>
-        <h3 className='text-center'>Day length: {this.getDateLength()}</h3>
+        <h3 className='text-center'>Day length: {this.getDayLength()}</h3>
         {this.getSunEvents()}
       </div>
     )

@@ -20,50 +20,42 @@ class App extends Component {
   }
 
   async componentDidMount () {
-    // get current coordinates
-    if (process.env.NODE_ENV !== 'production') {
-      return this.setState({
-        coordinates: defaultCoordinates,
-        loading: false
-      })
-    }
+    const coords = await this.getCoordinates()
 
-    try {
-      const coordinates = await this.getCoordinatesAsync()
-      this.setState({
-        currentDate: this.state.currentDate,
-        coordinates,
-        loading: false
-      })
-    } catch (error) {
-      console.error(error)
-      this.setState({
-        currentDate: this.state.currentDate,
-        loading: false,
-        error: true
-      })
-    }
+    this.setState({
+      currentDate: this.state.currentDate,
+      coordinates: coords,
+      loading: false
+    })
   }
 
-  getCoordinatesAsync () {
+  async getCoordinates () {
+    let coords = defaultCoordinates
+    try {
+      var pos = await this.getCoordinatesAsync()
+      coords = pos.coords
+    } catch (err) {
+      this.setState({
+        error: true,
+        errObj: err
+      })
+    }
+
+    return coords
+  }
+
+  getCoordinatesAsync (opts) {
+    opts = opts || {}
     return new Promise((resolve, reject) => {
       window.navigator.geolocation.getCurrentPosition(
-        (position) => {
-          resolve(position.coords)
-        },
-        (error) => {
-          reject(error)
-        },
-        {
-          maximumAge: 60000,
-          timeout: 5000,
-          enableHighAccuracy: true
-        })
+        position => resolve(position),
+        error => reject(error),
+        opts)
     })
   }
 
   getContent () {
-    if (this.state.loading || this.state.error) return
+    if (this.state.loading) return
     return (
       <div>
         <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
@@ -89,7 +81,7 @@ class App extends Component {
   getError () {
     if (this.state.error) {
       return (
-        <div className='error'>Error occurred :(</div>
+        <div className='error'>Error occurred! Using default coordinates now.</div>
       )
     }
   }
