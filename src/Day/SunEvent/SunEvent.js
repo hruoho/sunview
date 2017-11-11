@@ -13,7 +13,6 @@ class SunEvent extends Component {
   constructor (props) {
     super(props)
     this.event = evtDict[this.props.type]
-    this.formattedDiff = this.formatDiff(props.diff.prev)
   }
 
   getRootClass () {
@@ -27,7 +26,7 @@ class SunEvent extends Component {
   }
 
   formatDiff (diff) {
-    var fmt = diff > 0 ? '+mm:ss' : 'mm:ss'
+    const fmt = diff > 0 ? '+mm:ss' : 'mm:ss'
     return diff.format(fmt, {trim: false})
   }
 
@@ -43,7 +42,7 @@ class SunEvent extends Component {
         <div className='pure-u-1-2'>
           <div className='eventMoments'>
             <p className='eventMoment'>{moment(this.props.time).format('HH:mm:ss')}</p>
-            <p className='eventDiff'>{this.formattedDiff}</p>
+            <p className='eventDiff'>{this.formatDiff(this.props.diff.prev)}</p>
           </div>
         </div>
       </div>
