@@ -55,8 +55,7 @@ class App extends Component {
   }
 
   getContent () {
-    if (this.state.loading) return
-    return (
+    if (!this.state.loading) return (
       <div>
         <Day date={this.state.currentDate} coordinates={this.state.coordinates} />
 
@@ -81,7 +80,7 @@ class App extends Component {
   getError () {
     if (this.state.error) {
       return (
-        <div className='error'>Error occurred! Using default coordinates now.</div>
+        <div className='error'>Error occurred. Using default coordinates (Helsinki).</div>
       )
     }
   }
@@ -126,12 +125,12 @@ class App extends Component {
               <fieldset>
                 <legend>Sijainti</legend>
                 <div className="pure-control-group">
-                  <label htmlFor="longitude">Longitude</label>
-                  <input id="longitude" type="text" className="longitude" defaultValue={long} onChange={changeLong} />
+                  <label htmlFor="latitude">Latitude</label>
+                  <input id="latitude" type="text" className="latitude" defaultValue={lat} onChange={changeLat} />
                 </div>
                 <div className="pure-control-group">
-                  <label htmlFor="latitude">Longitude</label>
-                  <input id="latitude" type="text" className="latitude" defaultValue={lat} onChange={changeLat} />
+                  <label htmlFor="longitude">Longitude</label>
+                  <input id="longitude" type="text" className="longitude" defaultValue={long} onChange={changeLong} />
                 </div>
                 <div className="pure-controls">
                   <button type="button" className="pure-button pure-button-primary" onClick={acceptChanges}>OK</button>
@@ -177,12 +176,12 @@ class App extends Component {
           this.getLoader()
         }
         {
-          /* main content */
-          this.getContent()
-        }
-        {
           /* error message */
           this.getError()
+        }
+        {
+          /* main content */
+          this.getContent()
         }
         {
           /* location modal */

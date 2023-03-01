@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import './SunEvent.css'
 import moment from 'moment'
 
-const evtDict = {
+const sunEventTitles = {
   nadir: 'Nadir',
   sunrise: 'Sunrise',
   solarNoon: 'Solar noon',
@@ -12,17 +12,17 @@ const evtDict = {
 class SunEvent extends Component {
   constructor (props) {
     super(props)
-    this.event = evtDict[this.props.type]
+    this.event = sunEventTitles[this.props.type]
   }
 
   getRootClass () {
-    let classes = ['sunEvent', 'pure-g']
+    let classes = ['sunEvent']
     if (this.props.isToday && this.props.isActive) { classes.push('active') }
     return classes.join(' ')
   }
 
-  displayEvent () {
-    return evtDict[this.props.type]
+  showSunEventTitle () {
+    return sunEventTitles[this.props.type]
   }
 
   formatDiff (diff) {
@@ -33,18 +33,10 @@ class SunEvent extends Component {
   render () {
     return (
       <div className={this.getRootClass()}>
-        <div className='pure-u-1-2'>
-          <div className='eventType'>
-            <p>{this.displayEvent()}</p>
-            <p className='eventDiff'>{this.props.isToday ? this.props.diff.current : ''}</p>
-          </div>
-        </div>
-        <div className='pure-u-1-2'>
-          <div className='eventMoments'>
-            <p className='eventMoment'>{moment(this.props.time).format('HH:mm:ss')}</p>
-            <p className='eventDiff'>{this.formatDiff(this.props.diff.prev)}</p>
-          </div>
-        </div>
+        <p>{this.showSunEventTitle()}</p>
+        <p className='eventDiff'>{this.props.isToday ? this.props.diff.current : ''}</p>
+        <p className='eventMoment'>{moment(this.props.time).format('HH:mm:ss')}</p>
+        <p className='eventDiff'>{this.formatDiff(this.props.diff.prev)}</p>
       </div>
     )
   }
