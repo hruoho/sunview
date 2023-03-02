@@ -9,7 +9,7 @@ var SunCalc = require('suncalc')
 class Day extends Component {
   constructor (props) {
     super(props)
-    this.sunEvents = ['sunrise', 'sunset', 'nadir', 'solarNoon']
+    this.sunEvents = ['sunrise', 'sunset', 'dawn', 'dusk', 'nadir', 'solarNoon']
     this.setTimes(props.date, props.coordinates)
     this.state = {
       now: moment()
@@ -39,7 +39,7 @@ class Day extends Component {
 
   getDiff (type) {
     const eventTime = moment(this.eventTimes[type])
-    const ydaEventTime = moment(this.ydaEventTimes[type])
+    const ydaEventTime = moment(this.eventTimes1dAgo[type])
     return {
       current: moment(this.state.now).to(eventTime),
       prev: moment.duration(eventTime.diff(ydaEventTime.add(1, 'days')))
@@ -62,11 +62,20 @@ class Day extends Component {
             time={this.getTimes(type)}
             diff={this.getDiff(type)}
             isToday={this.isToday(this.props.date)}
-            isActive={this.isActive(index)}/>
+            isActive={this.isActive(index)} />
         )
       })}
     </div>
     )
+  }
+  getSunNow () {
+    const {azimuth, altitude} = this.positionNow
+    const azimuthDeg = azimuth * 180 / Math.PI + 180 // 0 => 0, 3/4 PI => 330
+    const altitudeDeg = altitude * 180 / Math.PI
+    return (<div className={'sunNow'}>
+      <p>{ azimuthDeg.toFixed(0) } ° az.</p>
+      <p>{ altitudeDeg.toFixed(0) } ° alt. </p>
+    </div>)
   }
 
   getTimes (type) {
@@ -83,8 +92,9 @@ class Day extends Component {
   }
 
   setTimes (date, { latitude, longitude }) {
+    this.positionNow = SunCalc.getPosition(moment(), latitude, longitude)
     this.eventTimes = SunCalc.getTimes(date, latitude, longitude)
-    this.ydaEventTimes = SunCalc.getTimes(moment(date).subtract(1, 'days'), latitude, longitude)
+    this.eventTimes1dAgo = SunCalc.getTimes(moment(date).subtract(1, 'days'), latitude, longitude)
   }
 
   tick () {
@@ -98,6 +108,7 @@ class Day extends Component {
       <div className='Day'>
         <h1 className='text-center'>{this.props.date.format('ddd MMM DD, YYYY')}</h1>
         <h3 className='text-center'>Day length: {this.getDayLength()}</h3>
+        {this.getSunNow()}
         {this.getSunEvents()}
       </div>
     )

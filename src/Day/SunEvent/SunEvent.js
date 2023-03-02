@@ -6,7 +6,9 @@ const sunEventTitles = {
   nadir: 'Nadir',
   sunrise: 'Sunrise',
   solarNoon: 'Solar noon',
-  sunset: 'Sunset'
+  sunset: 'Sunset',
+  dawn: 'Dawn',
+  dusk: 'Dusk'
 }
 
 class SunEvent extends Component {
